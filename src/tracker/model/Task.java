@@ -1,8 +1,4 @@
-enum Status {
-    NEW,
-    IN_PROGRESS,
-    DONE,
-}
+package tracker.model;
 
 public class Task {
 
@@ -19,8 +15,13 @@ public class Task {
         this.status = status;
     }
 
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -41,7 +42,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "tracker.model.Task{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

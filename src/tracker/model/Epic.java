@@ -1,3 +1,7 @@
+package tracker.model;
+
+import tracker.model.Status;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +17,10 @@ public class Epic extends Task {
         return subtaskIds;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     //Добавление подзадачи в эпик
     public void addSubtask(int subtaskId) {
         subtaskIds.add(subtaskId);
@@ -20,7 +28,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "tracker.model.Epic{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", status=" + status +

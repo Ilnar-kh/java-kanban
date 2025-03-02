@@ -1,30 +1,38 @@
+package tracker;
+
+import tracker.controllers.TaskManager;
+import tracker.model.Epic;
+import tracker.model.Status;
+import tracker.model.Subtask;
+import tracker.model.Task;
+
 public class Main {
     public static void main(String[] args) {
         TaskManager manager = new TaskManager();
 
         Task task1 = new Task(manager.generateId(), "Купить яблоки", "Сезонный сорт", Status.NEW);
         Task task2 = new Task(manager.generateId(), "Пойти в кофейню", "Заполнить дневник", Status.NEW);
-        manager.addTask(task1);
-        manager.addTask(task2);
+        manager.addNewTask(task1);
+        manager.addNewTask(task2);
 
         Epic epic1 = new Epic(manager.generateId(), "Организовать переезд",
                 "Спланировать отправку вещей");
-        manager.addEpic(epic1);
+        manager.addNewEpic(epic1);
 
         Subtask subtask1 = new Subtask(manager.generateId(), "Упаковать вещи", "Собрать коробки",
                 Status.NEW, epic1.getId());
         Subtask subtask2 = new Subtask(manager.generateId(), "Найти пункт отправки", "Оформить отправку",
                 Status.NEW, epic1.getId());
-        manager.addSubtask(subtask1);
-        manager.addSubtask(subtask2);
+        manager.addNewSubtask(subtask1);
+        manager.addNewSubtask(subtask2);
 
         Epic epic2 = new Epic(manager.generateId(), "Подготовиться к отпуску",
                 "Собрать документы и вещи");
-        manager.addEpic(epic2);
+        manager.addNewEpic(epic2);
 
         Subtask subtask3 = new Subtask(manager.generateId(), "Купить билеты", "Забронировать перелёт",
                 Status.NEW, epic2.getId());
-        manager.addSubtask(subtask3);
+        manager.addNewSubtask(subtask3);
 
         System.out.println("\n Список всех задач");
         System.out.println(manager.getTask(task1.getId()));
@@ -55,8 +63,8 @@ public class Main {
         System.out.println(manager.getEpic(epic2.getId()));
 
         System.out.println("\nУдаление задач и эпика");
-        manager.removeTask(task2.getId());
-        manager.removeEpic(epic1.getId());
+        manager.removeTasks(task2.getId());
+        manager.removeEpics(epic1.getId());
 
         System.out.println("\nСписок всех задач после удаления:");
         System.out.println(manager.getTask(task1.getId()));

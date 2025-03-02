@@ -1,4 +1,13 @@
+package tracker.controllers;
+
+import tracker.model.Epic;
+import tracker.model.Status;
+import tracker.model.Subtask;
+import tracker.model.Task;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TaskManager {
@@ -12,17 +21,27 @@ public class TaskManager {
         return idCounter++;
     }
 
-    public void addTask(Task task) {
-        tasks.put(task.getId(), task);
+    public int addNewTask(Task task) {
+        final int id = generateId();
+        task.setId(id);
+        tasks.put(id, task);
+        return id;
     }
 
-    public void addEpic(Epic epic) {
-        epics.put(epic.getId(), epic);
+    public int addNewEpic(Epic epic) {
+        final int id = generateId();
+        epic.setId(id);
+        epics.put(id, epic);
+        return id;
     }
 
-    public void addSubtask(Subtask subtask) {
-        subtasks.put(subtask.getId(), subtask);
-        epics.get(subtask.getEpicId()).addSubtask(subtask.getId());
+    public int addNewSubtask(Subtask subtask) {
+        final int id = generateId();
+        subtask.setId(id);
+        subtasks.put(id, subtask);
+        epics.get(subtask.getEpicId()).addSubtask(id);
+        updateEpicStatus(subtask.getEpicId());
+        return id;
     }
 
     public Task getTask(int id) {
@@ -33,9 +52,38 @@ public class TaskManager {
         return epics.get(id);
     }
 
+    public List<Subtask> getSubtasksByEpic(int epicId) {
+        Epic epic = epics.get(epicId);
+        if (epic == null) {
+            return new ArrayList<>();
+        }
+
+        List<Subtask> subtaskList = new ArrayList<>();
+        for (int subtaskId : epic.getSubtaskIds()) {
+            Subtask subtask = subtasks.get(subtaskId);
+            if (subtask != null) {
+                subtaskList.add(subtask);
+            }
+        }
+        return subtaskList;
+    }
+
     public Subtask getSubtask(int id) {
         return subtasks.get(id);
     }
+
+    public List<Task> getAllTasks() {
+        return new ArrayList<>(tasks.values());
+    }
+
+    public List<Epic> getAllEpics() {
+        return new ArrayList<>(epics.values());
+    }
+
+    public List<Subtask> getAllSubtasks() {
+        return new ArrayList<>(subtasks.values());
+    }
+
 
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
@@ -58,27 +106,23 @@ public class TaskManager {
         }
     }
 
-    public void removeTask(int id) {
+    public void removeTasks(int id) {
         tasks.remove(id);
     }
 
-    public void removeEpic(int id) {
-        if (epics.containsKey(id)) {
-            for (int subtaskId : epics.get(id).getSubtaskIds()) {
-                subtasks.remove(subtaskId);
-            }
-            epics.remove(id);
-        }
+    public void removeEpics(int id) {
+       epics.clear();
+       subtasks.clear();
     }
 
-    public void removeSubtask(int id) {
-        if (subtasks.containsKey(id)) {
-            int epicId = subtasks.get(id).getEpicId();
-            subtasks.remove(id);
-            epics.get(epicId).removeSubtask(id);
-            updateEpicStatus(epicId); // Пересчитываем статус эпика
+    public void removeSubtasks(int id) {
+        for (Epic epic : epics.values()) {
+            epic.getSubtaskIds().clear();
+            updateEpicStatus(epic.getId());
         }
+        subtasks.clear();
     }
+
 
 
     private void updateEpicStatus(int epicId) {
@@ -90,13 +134,17 @@ public class TaskManager {
 
         boolean allDone = true;
         boolean hasInProgress = false;
+        boolean hasNew = false;
 
         for (int subtaskId : epic.getSubtaskIds()) {
             Subtask subtask = subtasks.get(subtaskId);
-            if (subtask == null) continue; // Если подзадача уже удалена
+            if (subtask == null) continue;
 
             if (subtask.getStatus() == Status.IN_PROGRESS) {
                 hasInProgress = true;
+            }
+            if (subtask.getStatus() == Status.NEW) {
+                hasNew = true;
             }
             if (subtask.getStatus() != Status.DONE) {
                 allDone = false;
@@ -105,10 +153,11 @@ public class TaskManager {
 
         if (allDone) {
             epic.setStatus(Status.DONE);
-        } else if (hasInProgress) {
+        } else if (hasInProgress || (hasNew && !allDone)) {
             epic.setStatus(Status.IN_PROGRESS);
         } else {
             epic.setStatus(Status.NEW);
         }
     }
+
 }

@@ -1,3 +1,7 @@
+package tracker.model;
+
+import tracker.model.Status;
+
 public class Subtask extends Task {
 
     private int epicId;
@@ -11,9 +15,13 @@ public class Subtask extends Task {
         return epicId;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "Subtask{" +
+        return "tracker.model.Subtask{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", epicId='" + epicId + '\'' +
