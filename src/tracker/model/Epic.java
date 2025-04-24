@@ -1,7 +1,5 @@
 package tracker.model;
 
-import tracker.model.Status;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,12 +11,15 @@ public class Epic extends Task {
         super(id, title, description, Status.NEW);
     }
 
-    public List<Integer> getSubtaskIds() {
-        return new ArrayList<>(subtaskIds);
+    public Epic(Epic other) {
+        super(other);
+        // Копируем список идентификаторов подзадач
+        this.subtaskIds.clear();
+        this.subtaskIds.addAll(other.subtaskIds);
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public List<Integer> getSubtaskIds() {
+        return new ArrayList<>(subtaskIds);
     }
 
     public void addSubtaskId(int id) {
@@ -27,29 +28,6 @@ public class Epic extends Task {
         }
     }
 
-    @Override
-    public String toString() {
-        return "tracker.model.Epic{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", status=" + status +
-                ", subtaskIds=" + subtaskIds +
-                '}';
-    }
-
-    public Epic(Epic other) {
-        super(other);
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    //Удаление подзадачи из эпика
     public void removeSubtaskId(int id) {
         subtaskIds.remove((Integer) id);
     }
@@ -65,5 +43,15 @@ public class Epic extends Task {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Epic{" +
+                "id=" + getId() +
+                ", title='" + getTitle() + '\'' +
+                ", status=" + getStatus() +
+                ", subtaskIds=" + subtaskIds +
+                '}';
     }
 }
