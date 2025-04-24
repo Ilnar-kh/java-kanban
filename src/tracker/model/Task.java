@@ -50,15 +50,16 @@ public class Task {
     }
 
     public Task(Task other) {
-        this.id          = other.id;
-        this.title       = other.title;
+        this.id = other.id;
+        this.title = other.title;
         this.description = other.description;
-        this.status      = other.status;
+        this.status = other.status;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
