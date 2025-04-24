@@ -36,6 +36,10 @@ public class Epic extends Task {
                 '}';
     }
 
+    public Epic(Epic other) {
+        super(other);
+        this.subtaskIds = new ArrayList<>(other.subtaskIds);
+    }
 
     public void setTitle(String title) {
         this.title = title;

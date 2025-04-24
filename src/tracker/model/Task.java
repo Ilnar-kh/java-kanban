@@ -15,7 +15,6 @@ public class Task {
         this.status = status;
     }
 
-
     public int getId() {
         return id;
     }
@@ -49,4 +48,19 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
+
+    public Task(Task other) {
+        this.id          = other.id;
+        this.title       = other.title;
+        this.description = other.description;
+        this.status      = other.status;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

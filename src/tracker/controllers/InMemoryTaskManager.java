@@ -30,11 +30,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addNewTask(Task task) {
-        final int id = generateId();
-        task.setId(id);
-        tasks.put(id, task);
-        return id;
+        if (tasks.containsKey(task.getId())) {
+            throw new IllegalArgumentException("Задача с таким ID уже существует.");
+        }
+        tasks.put(task.getId(), task);
+        return task.getId();
     }
+
 
     @Override
     public int addNewEpic(Epic epic) {
@@ -57,15 +59,21 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(int id) {
         Task task = tasks.get(id);
-        historyManager.add(task);
-        return task;
+        if (task != null) {
+            historyManager.add(task);
+            return new Task(task);      // → возвращаем копию
+        }
+        return null;
     }
 
     @Override
     public Epic getEpic(int id) {
         Epic epic = epics.get(id);
-        historyManager.add(epic);
-        return epic;
+        if (epic != null) {
+            historyManager.add(epic);
+            return new Epic(epic);
+        }
+        return null;
     }
 
     @Override
@@ -92,9 +100,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Subtask getSubtask(int id) {
-        Subtask subtask = subtasks.get(id);
-        historyManager.add(subtask);
-        return subtask;
+        Subtask sub = subtasks.get(id);
+        if (sub != null) {
+            historyManager.add(sub);
+            return new Subtask(sub);
+        }
+        return null;
     }
 
     @Override
@@ -137,26 +148,35 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTasks(int id) {
+    public void removeTask(int id) {
         tasks.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
-    public void removeEpics(int id) {
-       epics.clear();
-       subtasks.clear();
-    }
-
-    @Override
-    public void removeSubtasks(int id) {
-        for (Epic epic : epics.values()) {
-            epic.getSubtaskIds().clear();
-            updateEpicStatus(epic.getId());
+    public void removeSubtask(int id) {
+        Subtask sub = subtasks.remove(id);
+        if (sub != null) {
+            Epic epic = epics.get(sub.getEpicId());
+            if (epic != null) {
+                epic.getSubtaskIds().remove((Integer) id);
+                updateEpicStatus(epic.getId());
+            }
+            historyManager.remove(id);
         }
-        subtasks.clear();
     }
 
-
+    @Override
+    public void removeEpic(int id) {
+        Epic epic = epics.remove(id);
+        if (epic != null) {
+            for (Integer subId : epic.getSubtaskIds()) {
+                subtasks.remove(subId);
+                historyManager.remove(subId);
+            }
+            historyManager.remove(id);
+        }
+    }
 
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
