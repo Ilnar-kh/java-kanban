@@ -2,6 +2,8 @@ package tracker.model;
 
 import tracker.model.Status;
 
+import java.util.Objects;
+
 public class Subtask extends Task {
 
     private int epicId;
@@ -32,5 +34,18 @@ public class Subtask extends Task {
                 ", title='" + title + '\'' +
                 ", epicId=" + epicId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Subtask)) return false;
+        Subtask that = (Subtask) o;
+        return getId() == that.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

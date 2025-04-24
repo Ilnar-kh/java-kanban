@@ -4,6 +4,7 @@ import tracker.model.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Epic extends Task {
     private List<Integer> subtaskIds;
@@ -21,9 +22,11 @@ public class Epic extends Task {
         this.id = id;
     }
 
-    //Добавление подзадачи в эпик
     public void addSubtask(int subtaskId) {
-        subtaskIds.add(subtaskId);
+        if (id == this.getId()) {
+            return;
+        }
+        subtaskIds.add(id);
     }
 
     @Override
@@ -52,5 +55,18 @@ public class Epic extends Task {
     //Удаление подзадачи из эпика
     public void removeSubtask(int subtaskId) {
         subtaskIds.remove(Integer.valueOf(subtaskId));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Epic)) return false;
+        Epic epic = (Epic) o;
+        return getId() == epic.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

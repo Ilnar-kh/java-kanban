@@ -1,5 +1,7 @@
 package tracker.model;
 
+import java.util.Objects;
+
 public class Task {
 
     protected int id;
@@ -64,4 +66,16 @@ public class Task {
         this.description = description;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return id == task.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
