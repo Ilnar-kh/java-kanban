@@ -11,18 +11,15 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-    // Copy-конструктор
     public Subtask(Subtask other) {
         super(other);
         this.epicId = other.epicId;
     }
 
-    // Оставляем только один геттер
     public int getEpicId() {
         return epicId;
     }
 
-    // Если нужен сеттер для id
     @Override
     public void setId(int id) {
         this.id = id;
