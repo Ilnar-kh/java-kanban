@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private List<Integer> subtaskIds;
+    private final List<Integer> subtaskIds = new ArrayList<>();
 
     public Epic(int id, String title, String description) {
         super(id, title, description, Status.NEW);
-        this.subtaskIds = new ArrayList<>();
     }
 
     public List<Integer> getSubtaskIds() {
@@ -22,11 +21,8 @@ public class Epic extends Task {
         this.id = id;
     }
 
-    public void addSubtask(int subtaskId) {
-        if (subtaskId == getId()) {
-            return;
-        }
-        subtaskIds.add(subtaskId);
+    public void addSubtaskId(int id) {
+        if (id != getId()) { subtaskIds.add(id); }
     }
 
     @Override
@@ -41,7 +37,6 @@ public class Epic extends Task {
 
     public Epic(Epic other) {
         super(other);
-        this.subtaskIds = new ArrayList<>(other.subtaskIds);
     }
 
     public void setTitle(String title) {
@@ -53,8 +48,8 @@ public class Epic extends Task {
     }
 
     //Удаление подзадачи из эпика
-    public void removeSubtask(int subtaskId) {
-        subtaskIds.remove(Integer.valueOf(subtaskId));
+    public void removeSubtaskId(int id) {
+        subtaskIds.remove((Integer) id);
     }
 
     @Override
