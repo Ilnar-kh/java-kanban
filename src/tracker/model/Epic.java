@@ -11,7 +11,6 @@ public class Epic extends Task {
         super(id, title, description, Status.NEW);
     }
 
-    // Copy-конструктор
     public Epic(Epic other) {
         super(other);
         this.subtaskIds.addAll(other.subtaskIds);
@@ -35,7 +34,7 @@ public class Epic extends Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Epic)) return false;
-        return getId() == ((Epic) o).getId();
+        return getId() == ((Epic)o).getId();
     }
 
     @Override
