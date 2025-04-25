@@ -97,22 +97,17 @@ class InMemoryTaskManagerTest {
 
     @Test
     void shouldPreserveInternalStateWhenReturnedTaskIsMutated() {
-        // 1) создаём и добавляем задачу
         Task original = new Task(1, "Исходный", "Описание", Status.NEW);
         manager.addNewTask(original);
 
-        // 2) получаем её из менеджера и мутируем через сеттеры
         Task fetched = manager.getTask(1);
         fetched.setTitle("Изменено");
         fetched.setDescription("Новое описание");
 
-        // 3) снова получаем — внутри всё должно остаться без изменений
         Task fetchedAgain = manager.getTask(1);
         assertEquals("Исходный", fetchedAgain.getTitle(),
                 "Менеджер должен сохранить оригинальный заголовок");
         assertEquals("Описание", fetchedAgain.getDescription(),
                 "Менеджер должен сохранить оригинальное описание");
     }
-
-
 }

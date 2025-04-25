@@ -10,7 +10,6 @@ public class Subtask extends Task {
 
     public Subtask(int id, String title, String description, Status status, int epicId) {
         super(id, title, description, status);
-        // если передали свой же ID как epicId — игнорируем
         this.epicId = (epicId == id) ? -1 : epicId;
     }
 
