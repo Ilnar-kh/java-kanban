@@ -1,8 +1,12 @@
 package tracker.model;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Epic extends Task {
     private final List<Integer> subtaskIds = new ArrayList<>();
@@ -11,10 +15,9 @@ public class Epic extends Task {
         super(id, title, description, Status.NEW);
     }
 
+    // Copy-конструктор
     public Epic(Epic other) {
         super(other);
-        // Копируем список идентификаторов подзадач
-        this.subtaskIds.clear();
         this.subtaskIds.addAll(other.subtaskIds);
     }
 
@@ -36,8 +39,7 @@ public class Epic extends Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Epic)) return false;
-        Epic epic = (Epic) o;
-        return getId() == epic.getId();
+        return getId() == ((Epic)o).getId();
     }
 
     @Override
