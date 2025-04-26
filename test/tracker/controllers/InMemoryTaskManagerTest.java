@@ -32,14 +32,14 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldNotAllowDuplicateId() {
-        Task t1 = new Task(1, "Первая", "Описание", Status.NEW);
-        Task t2 = new Task(1, "Вторая", "Описание", Status.NEW);
+    void shouldAssignDifferentIdsForTasksWithSameInputId() {
+        Task task1 = new Task(1, "Первая задача", "Описание", Status.NEW);
+        Task task2 = new Task(1, "Вторая задача", "Описание", Status.NEW);
 
-        manager.addNewTask(t1);
-        assertThrows(IllegalArgumentException.class,
-                () -> manager.addNewTask(t2),
-                "Задачи с одинаковым ID не должны допускаться");
+        int id1 = manager.addNewTask(task1);
+        int id2 = manager.addNewTask(task2);
+
+        assertNotEquals(id1, id2, "ID задач должны быть разными после добавления");
     }
 
     @Test
