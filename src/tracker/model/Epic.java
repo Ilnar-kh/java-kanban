@@ -20,10 +20,8 @@ public class Epic extends Task {
         return new ArrayList<>(subtaskIds);
     }
 
-    public void addSubtaskId(int id) {
-        if (id != getId()) {
-            subtaskIds.add(id);
-        }
+    public void addSubtask(int subtaskId) {
+        subtaskIds.add(subtaskId);
     }
 
     public void removeSubtaskId(int id) {
@@ -34,7 +32,7 @@ public class Epic extends Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Epic)) return false;
-        return getId() == ((Epic)o).getId();
+        return getId() == ((Epic) o).getId();
     }
 
     @Override

@@ -42,4 +42,11 @@ public interface TaskManager {
     void removeEpic(int id);
 
     void removeSubtask(int id);
+
+    void removeTasks();
+
+    void removeEpics();
+
+    void removeSubtasks();
+
 }

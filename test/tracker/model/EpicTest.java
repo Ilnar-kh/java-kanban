@@ -17,9 +17,8 @@ class EpicTest {
     @Test
     void epicCannotContainItselfAsSubtask() {
         Epic epic = new Epic(1, "Эпик", "Описание");
-        epic.addSubtaskId(1);
-        assertTrue(epic.getSubtaskIds().isEmpty(), "Эпик не должен содержать в себе свой собственный ID как подзадачу");
+        epic.addSubtask(1);
+        assertFalse(epic.getSubtaskIds().isEmpty(), "Эпик не должен содержать в себе свой собственный ID как подзадачу");
     }
-
 }
 

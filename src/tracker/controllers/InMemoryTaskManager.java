@@ -30,13 +30,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addNewTask(Task task) {
-        if (tasks.containsKey(task.getId())) {
-            throw new IllegalArgumentException("Задача с таким ID уже существует.");
-        }
-        tasks.put(task.getId(), task);
-        return task.getId();
+        final int id = generateId();
+        task.setId(id);
+        tasks.put(id, task);
+        return id;
     }
-
 
     @Override
     public int addNewEpic(Epic epic) {
@@ -51,11 +49,8 @@ public class InMemoryTaskManager implements TaskManager {
         final int id = generateId();
         subtask.setId(id);
         subtasks.put(id, subtask);
-        Epic epic = epics.get(subtask.getEpicId());
-        if (epic != null) {
-            epic.addSubtaskId(id);
-            updateEpicStatus(epic.getId());
-        }
+        epics.get(subtask.getEpicId()).addSubtask(id);
+        updateEpicStatus(subtask.getEpicId());
         return id;
     }
 
@@ -185,6 +180,37 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    @Override
+    public void removeTasks() {
+        for (Task task : tasks.values()) {
+            historyManager.remove(task.getId());
+        }
+        tasks.clear();
+    }
+
+    @Override
+    public void removeEpics() {
+        for (Epic epic : epics.values()) {
+            historyManager.remove(epic.getId());
+            for (Integer subtaskId : epic.getSubtaskIds()) {
+                historyManager.remove(subtaskId);
+                subtasks.remove(subtaskId);
+            }
+        }
+        epics.clear();
+    }
+
+    @Override
+    public void removeSubtasks() {
+        for (Subtask subtask : subtasks.values()) {
+            historyManager.remove(subtask.getId());
+        }
+        for (Epic epic : epics.values()) {
+            epic.getSubtaskIds().clear();
+            updateEpicStatus(epic.getId());
+        }
+        subtasks.clear();
+    }
 
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
