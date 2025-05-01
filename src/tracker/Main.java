@@ -63,8 +63,8 @@ public class Main {
         System.out.println(manager.getEpic(epic2.getId()));
 
         System.out.println("\nУдаление задач и эпика:");
-        manager.removeTasks(task2.getId());
-        manager.removeEpics(epic1.getId());
+        manager.removeTask(task2.getId());
+        manager.removeEpic(epic1.getId());
 
         System.out.println("\nСписок всех задач после удаления:");
         System.out.println(manager.getTask(task1.getId()));

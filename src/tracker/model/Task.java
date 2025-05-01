@@ -1,5 +1,7 @@
 package tracker.model;
 
+import java.util.Objects;
+
 public class Task {
 
     protected int id;
@@ -14,7 +16,6 @@ public class Task {
         this.description = description;
         this.status = status;
     }
-
 
     public int getId() {
         return id;
@@ -48,5 +49,33 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    public Task(Task other) {
+        this.id = other.id;
+        this.title = other.title;
+        this.description = other.description;
+        this.status = other.status;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return id == task.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
