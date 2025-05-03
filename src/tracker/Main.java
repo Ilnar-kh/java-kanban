@@ -16,8 +16,7 @@ public class Main {
         manager.addNewTask(task1);
         manager.addNewTask(task2);
 
-        Epic epic1 = new Epic(manager.generateId(), "Организовать переезд",
-                "Спланировать отправку вещей");
+        Epic epic1 = new Epic(manager.generateId(), "Организовать переезд", "Спланировать вещи", Status.NEW);
         manager.addNewEpic(epic1);
 
         Subtask subtask1 = new Subtask(manager.generateId(), "Упаковать вещи", "Собрать коробки",
@@ -28,7 +27,7 @@ public class Main {
         manager.addNewSubtask(subtask2);
 
         Epic epic2 = new Epic(manager.generateId(), "Подготовиться к отпуску",
-                "Собрать документы и вещи");
+                "Собрать документы и вещи", Status.NEW);
         manager.addNewEpic(epic2);
 
         Subtask subtask3 = new Subtask(manager.generateId(), "Купить билеты", "Забронировать перелёт",
@@ -63,8 +62,8 @@ public class Main {
         System.out.println(manager.getEpic(epic2.getId()));
 
         System.out.println("\nУдаление задач и эпика:");
-        manager.removeTasks(task2.getId());
-        manager.removeEpics(epic1.getId());
+        manager.removeTask(task2.getId());
+        manager.removeEpic(epic1.getId());
 
         System.out.println("\nСписок всех задач после удаления:");
         System.out.println(manager.getTask(task1.getId()));

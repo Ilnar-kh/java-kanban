@@ -1,52 +1,63 @@
 package tracker.model;
 
-import tracker.model.Status;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Epic extends Task {
-    private List<Integer> subtaskIds;
+    private final List<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(int id, String title, String description) {
-        super(id, title, description, Status.NEW);
-        this.subtaskIds = new ArrayList<>();
+    public Epic(int id, String name, String description, Status status) {
+        super(id, name, description, Status.NEW);
+        this.type = TaskType.EPIC;
+    }
+
+    public Epic(Epic other) {
+        super(other);
+        this.subtaskIds.addAll(other.subtaskIds);
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
+    }
+
+
+    public Epic(int id, String name, String description) {
+        this(id, name, description, Status.NEW);
     }
 
     public List<Integer> getSubtaskIds() {
-        return subtaskIds;
+        return new ArrayList<>(subtaskIds);
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    //Добавление подзадачи в эпик
     public void addSubtask(int subtaskId) {
         subtaskIds.add(subtaskId);
     }
 
+    public void removeSubtaskId(int id) {
+        subtaskIds.remove((Integer) id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Epic)) return false;
+        return getId() == ((Epic) o).getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
     @Override
     public String toString() {
-        return "tracker.model.Epic{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", status=" + status +
+        return "Epic{" +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", status=" + getStatus() +
                 ", subtaskIds=" + subtaskIds +
                 '}';
-    }
-
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    //Удаление подзадачи из эпика
-    public void removeSubtask(int subtaskId) {
-        subtaskIds.remove(Integer.valueOf(subtaskId));
     }
 }
