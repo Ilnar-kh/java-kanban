@@ -1,6 +1,7 @@
 package tracker.controllers;
 
 
+import tracker.exceptions.ManagerSaveException;
 import tracker.history.HistoryManager;
 import tracker.model.*;
 
@@ -58,7 +59,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         sb.append(task.getStatus()).append(",");
         sb.append(task.getDescription()).append(",");
 
-        if (task instanceof Subtask) {
+        TaskType type = task.getType();
+
+        if (type.equals(TaskType.SUBTASK)) {
             sb.append(((Subtask) task).getEpicId());
         } else {
             sb.append("");
@@ -130,11 +133,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int generateId() {
-        return super.generateId();
-    }
-
-    @Override
     public int addNewTask(Task task) {
         int id = super.addNewTask(task);
         save();
@@ -153,46 +151,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         int id = super.addNewSubtask(subtask);
         save();
         return id;
-    }
-
-    @Override
-    public Task getTask(int id) {
-        return super.getTask(id);
-    }
-
-    @Override
-    public Epic getEpic(int id) {
-        return super.getEpic(id);
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        return super.getHistory();
-    }
-
-    @Override
-    public List<Subtask> getSubtasksByEpic(int epicId) {
-        return super.getSubtasksByEpic(epicId);
-    }
-
-    @Override
-    public Subtask getSubtask(int id) {
-        return super.getSubtask(id);
-    }
-
-    @Override
-    public List<Task> getAllTasks() {
-        return super.getAllTasks();
-    }
-
-    @Override
-    public List<Epic> getAllEpics() {
-        return super.getAllEpics();
-    }
-
-    @Override
-    public List<Subtask> getAllSubtasks() {
-        return super.getAllSubtasks();
     }
 
     @Override
