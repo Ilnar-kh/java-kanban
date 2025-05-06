@@ -7,13 +7,23 @@ import java.util.Objects;
 public class Epic extends Task {
     private final List<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(int id, String title, String description) {
-        super(id, title, description, Status.NEW);
-    }
+    public Epic(int id, String name, String description, Status status) {
+        super(id, name, description, Status.NEW);
+        this.type = TaskType.EPIC;
 
     public Epic(Epic other) {
         super(other);
         this.subtaskIds.addAll(other.subtaskIds);
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
+    }
+
+
+    public Epic(int id, String name, String description) {
+        this(id, name, description, Status.NEW);
     }
 
     public List<Integer> getSubtaskIds() {
@@ -44,7 +54,7 @@ public class Epic extends Task {
     public String toString() {
         return "Epic{" +
                 "id=" + getId() +
-                ", title='" + getTitle() + '\'' +
+                ", name='" + getName() + '\'' +
                 ", status=" + getStatus() +
                 ", subtaskIds=" + subtaskIds +
                 '}';

@@ -1,7 +1,7 @@
-package tracker.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tracker.controllers.InMemoryTaskManager;
 import tracker.history.InMemoryHistoryManager;
 import tracker.model.Epic;
 import tracker.model.Status;
@@ -28,7 +28,7 @@ class InMemoryTaskManagerTest {
         Task stored = manager.getTask(taskId);
         assertNotNull(stored, "Менеджер должен вернуть задачу");
         assertEquals(taskId, stored.getId());
-        assertEquals("Тестовая задача", stored.getTitle());
+        assertEquals("Тестовая задача", stored.getName());
     }
 
     @Test
@@ -105,7 +105,7 @@ class InMemoryTaskManagerTest {
         fetched.setDescription("Новое описание");
 
         Task fetchedAgain = manager.getTask(1);
-        assertEquals("Исходный", fetchedAgain.getTitle(),
+        assertEquals("Исходный", fetchedAgain.getName(),
                 "Менеджер должен сохранить оригинальный заголовок");
         assertEquals("Описание", fetchedAgain.getDescription(),
                 "Менеджер должен сохранить оригинальное описание");

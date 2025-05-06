@@ -40,7 +40,7 @@ public interface TaskManager {
     void removeTask(int id);
 
     void removeEpic(int id);
-
+  
     void removeSubtask(int id);
 
     void removeTasks();
@@ -48,5 +48,4 @@ public interface TaskManager {
     void removeEpics();
 
     void removeSubtasks();
-
 }

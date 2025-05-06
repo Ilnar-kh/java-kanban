@@ -5,16 +5,17 @@ import java.util.Objects;
 public class Task {
 
     protected int id;
-    protected String title;
+    protected String name;
     protected String description;
     protected Status status;
+    protected TaskType type;
 
-
-    public Task(int id, String title, String description, Status status) {
+    public Task(int id, String name, String description, Status status) {
         this.id = id;
-        this.title = title;
+        this.name = name;
         this.description = description;
         this.status = status;
+        this.type = TaskType.TASK;
     }
 
     public int getId() {
@@ -25,8 +26,8 @@ public class Task {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
@@ -45,7 +46,7 @@ public class Task {
     public String toString() {
         return "tracker.model.Task{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
+                ", title='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
@@ -53,13 +54,13 @@ public class Task {
 
     public Task(Task other) {
         this.id = other.id;
-        this.title = other.title;
+        this.name = other.name;
         this.description = other.description;
         this.status = other.status;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.name = name;
     }
 
     public void setDescription(String description) {
@@ -77,5 +78,9 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public TaskType getType() {
+        return type;
     }
 }

@@ -7,15 +7,26 @@ import java.util.Objects;
 public class Subtask extends Task {
 
     private int epicId;
+    protected TaskType type;
 
-    public Subtask(int id, String title, String description, Status status, int epicId) {
-        super(id, title, description, status);
+    public Subtask(int id, String name, String description, Status status, int epicId) {
+        super(id, name, description, status);
+        this.type = TaskType.SUBTASK;
         this.epicId = (epicId == id) ? -1 : epicId;
     }
 
     public Subtask(Subtask other) {
         super(other);
         this.epicId = other.epicId;
+    }
+
+    public Subtask(int id, String name, String description, int epicId) {
+        this(id, name, description, Status.NEW, epicId);
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.SUBTASK;
     }
 
     public int getEpicId() {
@@ -31,7 +42,7 @@ public class Subtask extends Task {
     public String toString() {
         return "tracker.model.Subtask{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
                 ", epicId=" + epicId +
                 '}';
     }

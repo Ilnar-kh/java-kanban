@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private Map<Integer, Task> tasks = new HashMap<>();
-    private Map<Integer, Epic> epics = new HashMap<>();
-    private Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected Map<Integer, Task> tasks = new HashMap<>();
+    protected Map<Integer, Epic> epics = new HashMap<>();
+    protected Map<Integer, Subtask> subtasks = new HashMap<>();
 
     private final HistoryManager historyManager;
     private int idCounter = 1;
@@ -59,7 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         if (task != null) {
             historyManager.add(task);
-            return new Task(task);      // → возвращаем копию
+            return new Task(task);
         }
         return null;
     }
@@ -140,7 +140,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
             Epic oldEpic = epics.get(epic.getId());
-            oldEpic.setTitle(epic.getTitle());
+            oldEpic.setTitle(epic.getName());
             oldEpic.setDescription(epic.getDescription());
         }
     }
