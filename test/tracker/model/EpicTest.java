@@ -1,6 +1,7 @@
 package tracker.model;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
@@ -16,9 +17,8 @@ class EpicTest {
     @Test
     void epicCannotContainItselfAsSubtask() {
         Epic epic = new Epic(1, "Эпик", "Описание");
-        Subtask subtask = new Subtask(1, "Подзадача", "Описание", Status.NEW, epic.getId());
-
-        assertNotEquals(epic.getId(), subtask.getId(), "Эпик не может быть своей же подзадачей");
+        epic.addSubtask(1);
+        assertFalse(epic.getSubtaskIds().isEmpty(), "Эпик не должен содержать в себе свой собственный ID как подзадачу");
     }
 }
 
